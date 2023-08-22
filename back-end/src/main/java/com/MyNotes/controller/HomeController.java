@@ -1,6 +1,7 @@
 package com.MyNotes.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MyNotes.payloads.CategoryDto;
+import com.MyNotes.payloads.NoteDto;
 import com.MyNotes.payloads.UserDto;
 import com.MyNotes.repository.UserRepository;
 import com.MyNotes.service.CategoryService;
+import com.MyNotes.service.NoteService;
 import com.MyNotes.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,7 +99,8 @@ public class HomeController {
 	}
 	
 	
-	//check after adding notes .....
+	//checked after adding notes .....
+	//when deleting categories we also delete all notes related to the categories...
 	@DeleteMapping("/deleteCategory")
 	public ResponseEntity<?> deleteCategory(@RequestParam int id,Principal principal) {
 		String username = principal.getName();
@@ -105,4 +109,34 @@ public class HomeController {
 		return new ResponseEntity<>(deleteCategory, httpStatus);
 	}
 
+	@PutMapping("/updateCategory")
+	public ResponseEntity<?> updateCategory(@RequestBody CategoryDto categoryDto,Principal principal){
+		boolean result = categoryService.updateCategoryName(categoryDto.getName(),categoryDto.getId(),principal.getName());
+		HttpStatus httpStatus = (result) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		return new ResponseEntity<>(result,httpStatus);
+	}
+	
+	@GetMapping("/getCategories")
+	public ResponseEntity<?> getCategories(Principal principal){
+		List<CategoryDto> categories = categoryService.getCategories(principal.getName());
+		return new ResponseEntity<>(categories,HttpStatus.OK);
+	}
+	
+	@GetMapping("/getCategory")
+	public ResponseEntity<?> getCategory(@RequestBody CategoryDto categoryDto,Principal principal){
+		CategoryDto category = categoryService.getCategory(categoryDto.getName(),principal.getName());
+		return new ResponseEntity<>(category,HttpStatus.OK);
+	}
+	
+	
+	@Autowired 
+	NoteService noteService;
+	
+	@PostMapping("/addNote")
+	public ResponseEntity<?> addNote(Principal principal,@RequestBody NoteDto dto,@RequestParam String categoryName){
+		boolean addNote = noteService.addNote(principal.getName(),categoryName, dto);
+		HttpStatus httpStatus = (addNote) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		return new ResponseEntity<>(addNote,httpStatus);
+	}
+	
 }
