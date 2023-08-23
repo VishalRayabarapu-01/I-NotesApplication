@@ -27,7 +27,7 @@ public class GlobalExceptionalController {
         return new ResponseEntity<>("Illegal Argument while fetching the username !!",HttpStatus.BAD_REQUEST);
     }
 	
-	@ExceptionHandler(ExpiredJwtException.class)
+	@ExceptionHandler(value = {ExpiredJwtException.class})
 	public ResponseEntity<?> expiredToken() {
         return new ResponseEntity<>("Given jwt token is expired !!",HttpStatus.BAD_REQUEST);
     }
@@ -47,5 +47,9 @@ public class GlobalExceptionalController {
         return new ResponseEntity<>(exception.getMessage(),exception.getHttpStatus());
     }
 	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<?> resourceException(ResourceNotFoundException ex){
+		return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+	}
 	
 }

@@ -1,19 +1,19 @@
 package com.MyNotes.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
+
 import com.MyNotes.payloads.NoteDto;
-import com.MyNotes.payloads.UserDto;
 
 @Service
 public interface NoteService {
 
 	public boolean addNote(String username,String categoryName,NoteDto NoteDto);
 	
-	public boolean deleteNote(int noteId,UserDto user);
+	public boolean deleteNote(int noteId,String username,String cname);
 	
-	public boolean updateNote(int noteId,NoteDto NoteDto,UserDto dto);
+	public boolean updateTitle(int noteId,String title);
 	
-	public List<NoteDto> getNotes(UserDto user);
+	public boolean updateContent(int noteId,String content);
+	
+	public NoteDto getNote(int noteId);
 }

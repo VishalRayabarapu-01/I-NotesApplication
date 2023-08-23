@@ -71,7 +71,7 @@ public class AuthController {
     @PostMapping("/add")
 	public ResponseEntity<?> vv(@RequestBody UserDto dto) {
 		UserDto addUser = userService.addUser(dto);
-		return ResponseEntity.ok(addUser);
+		return new ResponseEntity<>(addUser,HttpStatus.CREATED);
 	}
     
     

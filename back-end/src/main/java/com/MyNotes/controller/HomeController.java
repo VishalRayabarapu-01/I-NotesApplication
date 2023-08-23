@@ -95,7 +95,7 @@ public class HomeController {
 	@PostMapping("/addCategory")
 	public ResponseEntity<?> addCategory(Principal principal,@RequestBody CategoryDto categoryDto){
 		 boolean addCategory = categoryService.addCategory(principal.getName(),categoryDto);
-		return new ResponseEntity<>(addCategory,HttpStatus.OK);
+		return new ResponseEntity<>(addCategory,HttpStatus.CREATED);
 	}
 	
 	
@@ -135,8 +135,36 @@ public class HomeController {
 	@PostMapping("/addNote")
 	public ResponseEntity<?> addNote(Principal principal,@RequestBody NoteDto dto,@RequestParam String categoryName){
 		boolean addNote = noteService.addNote(principal.getName(),categoryName, dto);
-		HttpStatus httpStatus = (addNote) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		HttpStatus httpStatus = (addNote) ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST;
 		return new ResponseEntity<>(addNote,httpStatus);
 	}
+	
+	@DeleteMapping("/deleteNote")
+	public ResponseEntity<?> delNote(Principal principal,@RequestBody NoteDto dto,@RequestParam String categoryName){
+		boolean deleteNote = noteService.deleteNote(dto.getId(), principal.getName(),categoryName);
+		HttpStatus httpStatus = (deleteNote) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		return new ResponseEntity<>(deleteNote, httpStatus);
+	}
+	
+	@GetMapping("/getNote")
+	public ResponseEntity<?> getNote(@RequestBody NoteDto dto){
+		NoteDto note = noteService.getNote(dto.getId());
+		return new ResponseEntity<>(note,HttpStatus.OK);
+	}
+	
+	@PutMapping("/updateNoteTitle")
+	public ResponseEntity<?> updateNoteTitle(@RequestBody NoteDto noteDto){
+		boolean updateTitle = noteService.updateTitle(noteDto.getId(),noteDto.getTitle());
+		HttpStatus httpStatus = (updateTitle) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		return new ResponseEntity<>(updateTitle,httpStatus);
+	}
+	
+	@PutMapping("/updateNoteContent")
+	public ResponseEntity<?> updateNoteContent(@RequestBody NoteDto noteDto){
+		boolean updateContent = noteService.updateContent(noteDto.getId(),noteDto.getContent());
+		HttpStatus httpStatus = (updateContent) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		return new ResponseEntity<>(updateContent,httpStatus);
+	}
+	
 	
 }
