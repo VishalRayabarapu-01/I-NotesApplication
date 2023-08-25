@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Navbar from './components/Navbar'
 import LoginForm from './components/LoginForm'
 import GetStarted from "./components/GetStarted";
+import UserHome from "./components/user/UserHome";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Home />} />
           <Route path="/get-started" exact element={<GetStarted />} />
-          <Route path="/login" exact element={<LoginForm />} />
+          <Route path="/login" exact element={<UserHome />} />
+          <Route path="/user/home" exact element={<UserHome />} />
         </Routes>
     </>
   );

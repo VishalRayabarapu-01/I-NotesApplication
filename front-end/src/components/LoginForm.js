@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import axios from 'axios'
 
 const LoginForm = () => {
+
+    const navigate = useNavigate();
 
     const styles = {
         backdropFilter: 'blur(20px)',
@@ -19,7 +22,7 @@ const LoginForm = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
-    //use histrory hook is used to redirect to another page by push method.
+    //use navigate hook is used to redirect to another page by push method.
 
     const emailUpdated = (e) => {
         setEmail(e.target.value)
@@ -29,14 +32,57 @@ const LoginForm = () => {
         setPassword(e.target.value)
     }
 
+    // const authenticateUser = async () => {
+    //     let url = "http://localhost:9092/auth/login";
+    //     let obj = {
+    //         method: "POST",
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: {
+    //             email: email,
+    //             password: password
+    //         }
+    //     };
+    //     const response = await fetch(url, obj)
+    //     const data = await response.json()
+    //     console.log(data);
+    // }
+
+    const validateUser = () => {
+        let url = "http://localhost:9092/auth/login";
+        let obj = {
+            email: email,
+            password: password
+        }
+        axios.post(url, obj)
+            .then((response) => {
+                localStorage.setItem("token", response.data.jwtToken)
+                localStorage.setItem("user", response.data.username)
+                navigate("/user/home")
+            })
+            .catch((error) => {
+                if (error.response) {
+                    if (error.response.status !== 200) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error Occured !!!',
+                            confirmButtonText: 'OK',
+                            text: error.response.data
+                        }).then(() => {
+                            setEmail("")
+                            setPassword("")
+                        })
+                    }
+                }
+            })
+    }
+
     const detailsSubmitted = () => {
         if (email.includes("@")) {
-            console.log("inside")
-            // code for login and .......
+            validateUser()
         } else {
             Swal.fire({
-                icon:'info',
-                title: 'Enter a valid E-mail id.',
+                icon: 'info',
+                text: 'Enter a valid Credentials',
                 showConfirmButton: false,
                 timer: 1900,
             })
@@ -52,15 +98,15 @@ const LoginForm = () => {
                             <div className="row mt-1">
                                 <div className="row">
                                     <label className='fs-1 text-light'>Sign in</label>
-                                    <label htmlFor="" className='mt-2'>New User ? <Link to="/get-started" style={{ textDecoration: "none" }}>Create an account</Link></label>
+                                    <label className='mt-2'>New User ? <Link to="/get-started" style={{ textDecoration: "none" }}>Create an account</Link></label>
                                 </div>
                             </div>
                             <div className="form-group mt-4">
-                                <label htmlFor="" className="text-light">Username <span className="text-danger">*</span></label>
+                                <label className="text-light">Username <span className="text-danger">*</span></label>
                                 <input type="text" required value={email} onChange={emailUpdated} className="form-control mt-1" />
                             </div>
                             <div className="form-group mt-1">
-                                <label htmlFor="" className="text-light">Password <span className="text-danger">*</span></label>
+                                <label className="text-light">Password <span className="text-danger">*</span></label>
                                 <input type="password" required value={password} onChange={passwordUpdated} className="form-control mt-1" />
                             </div>
                             <div className="text-center mt-4">
