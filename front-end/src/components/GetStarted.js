@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2'
+import Navbar from './Navbar'
+import "bootstrap/dist/css/bootstrap.min.css"
 
 const GetStarted = () => {
 
@@ -20,12 +22,12 @@ const GetStarted = () => {
   }
 
   const submitDetails = () => {
-    if (name.length >=4) {
+    if (name.length >= 4) {
       if (email.includes("@")) {
         if (password.length > 8) {
           console.log("All good")
           //
-        }else{
+        } else {
           Swal.fire({
             icon: 'info',
             text: 'Password should be greater than 8 words.'
@@ -47,6 +49,7 @@ const GetStarted = () => {
 
   return (
     <>
+      <Navbar />
       <div className="container">
         <div className="row mt-3">
           <div className="col-md-8 offset-md-2 ">

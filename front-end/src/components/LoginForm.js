@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import Navbar from './Navbar'
+import "bootstrap/dist/css/bootstrap.min.css"
 
 const LoginForm = () => {
 
@@ -90,6 +92,7 @@ const LoginForm = () => {
     }
     return (
         <>
+            <Navbar />
             <div style={styles} >
                 <div className="container mt-5" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <div className="card mt-5" style={style1}>

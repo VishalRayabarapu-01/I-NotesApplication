@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import "bootstrap/dist/css/bootstrap.min.css"
 
 const Navbar = () => {
     return (
@@ -28,7 +29,7 @@ const Navbar = () => {
                         <Link to="/" className="mx-3 text-light" style={{textDecoration : "none"}}>My Notes</Link>
                     </div>
                     <div className="d-flex">
-                        <Link to="login" className="btn btn-md text-light mx-4" >Log in</Link>
+                        <Link to="/login" className="btn btn-md text-light mx-4" >Log in</Link>
                     </div>
                 </div>
             </nav>
