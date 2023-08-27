@@ -13,7 +13,7 @@ const LoginForm = () => {
         backdropFilter: 'blur(20px)',
         height: "87vh",
         backgroundSize: "cover",
-        background: "url(login.jpeg)"
+        background: "url(/image/login.jpeg)"
     }
     const style1 = {
         backdropFilter: '5px',

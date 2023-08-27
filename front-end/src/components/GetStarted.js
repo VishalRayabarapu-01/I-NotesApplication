@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Swal from 'sweetalert2'
 import Navbar from './Navbar'
 import "bootstrap/dist/css/bootstrap.min.css"
+import axios from 'axios'
 
 const GetStarted = () => {
 
@@ -25,8 +26,38 @@ const GetStarted = () => {
     if (name.length >= 4) {
       if (email.includes("@")) {
         if (password.length > 8) {
-          console.log("All good")
-          //
+          let url = "http://localhost:9092/auth/add"
+          let obj = {
+            username: email,
+            password: password,
+            name: name
+          }
+          axios.post(url, obj).then(res => {
+            if (res.status === 201) {
+              Swal.fire({
+                icon: 'success',
+                text: 'Account created.'
+              })
+              setEmail("")
+              setName("")
+              setPassword("")
+            }
+          }).catch(error => {
+            if (error.response) {
+              console.log(error.response.data)
+              Swal.fire({
+                icon: 'error',
+                title: 'Error Occured while creating account.',
+                confirmButtonText: 'OK',
+                text: error.response.data
+              }).then(() => {
+                setEmail("")
+                setName("")
+                setPassword("")
+              })
+            }
+          })
+
         } else {
           Swal.fire({
             icon: 'info',
@@ -55,7 +86,7 @@ const GetStarted = () => {
           <div className="col-md-8 offset-md-2 ">
             <div className="mycard bg-light" >
               <div className="text-center ">
-                <img src="signup.png" className='mt-1' style={{ padding: '10px', height: '9em', filter: 'drop-shadow(2px 3px 10px)' }} alt="" />
+                <img src="/image/signup.png" className='mt-1' style={{ padding: '10px', height: '9em', filter: 'drop-shadow(2px 3px 10px)' }} alt="" />
               </div>
               <div className="text-center fs-1 fw-bold" style={{ padding: '10px', paddingTop: '0px' }}>SignUp Here!</div>
               <form>

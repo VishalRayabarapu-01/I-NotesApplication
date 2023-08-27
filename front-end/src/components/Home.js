@@ -23,7 +23,7 @@ function Home() {
             </div>
           </div>
           <div className="col mt-2 text-center">
-            <img src="note.png" alt="" />
+            <img src="/image/note.png" alt="" />
           </div>
         </div>
       </div>

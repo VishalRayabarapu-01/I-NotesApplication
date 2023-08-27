@@ -1,0 +1,24 @@
+.img{
+    background: url('/public/image/welcome.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 30em;
+    height: 30em;
+}
+.texts{
+    opacity: 1;
+    line-height: 29px;
+    transition: opacity 0.5s ease-in;
+}
+
+.animate{
+    opacity: 0;
+}
+
+.addNoteImg{
+    background: url('/public/image/addNote.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 25em;
+    height: 25em;
+}

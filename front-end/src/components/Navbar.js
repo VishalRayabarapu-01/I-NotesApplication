@@ -25,7 +25,7 @@ const Navbar = () => {
             <nav className="navbar navbar-expand-md  sticky-top bg-body-tertiary bg-dark">
                 <div className="container-fluid">
                     <div className="navbar-brand fs-3 px-3">
-                        <img src="logo192.png" alt="Logo" width="40" height="40" className="d-inline-block align-text-top" />
+                        <img src="/image/logo192.png" alt="Logo" width="40" height="40" className="d-inline-block align-text-top" />
                         <Link to="/" className="mx-3 text-light" style={{textDecoration : "none"}}>My Notes</Link>
                     </div>
                     <div className="d-flex">
