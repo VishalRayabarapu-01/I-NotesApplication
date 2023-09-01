@@ -1,13 +1,23 @@
-import React, { useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useRef, useState, useContext, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import HomeContent from './HomeContent'
 import Notes from './Notes'
 import TODO from './TODO'
 import Settings from './Settings'
-import Signout from './Signout'
+import userContext from '../../contexts/UserContext'
 import "bootstrap/dist/css/bootstrap.min.css"
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const UserHome = () => {
+
+  const userObj = useContext(userContext);
+  // //const navigate = useNavigate(); we can also use navigator to navigate but not best in this case.
+  // console.log(userObj.loggedUser)
+  // if (userObj.loggedUser === "") {
+  //     window.location.href = "/login";
+  //     //navigate("/login")
+  // }
 
   const location = useLocation();
   let currentPage = location.pathname.substring(6)
@@ -35,21 +45,59 @@ const UserHome = () => {
 
   const inputObj = { outline: isHover ? 'none' : 'snow', border: '0px', borderBottom: '1px solid black', fontSize: '20px' }
 
-  let contentToShow=null;
-  
+  let contentToShow = null;
+
   if (currentPage === 'home') {
-    contentToShow=<HomeContent/>
+    contentToShow = <HomeContent />
   } else if (currentPage === 'notes') {
-    contentToShow=<Notes/>
+    contentToShow = <Notes />
   }
   else if (currentPage === 'todo') {
-    contentToShow=<TODO/>
+    contentToShow = <TODO />
   }
   else if (currentPage === 'settings') {
-    contentToShow=<Settings/>
-  } else if (currentPage === 'signout') {
-    contentToShow=<Signout/>
+    contentToShow = <Settings />
   }
+const navigate=useNavigate()
+  const signOutUser =()=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout !'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem('tokenForValidation')
+        localStorage.removeItem('user')
+        userObj.setLoggedUser('')
+        Swal.fire(
+          'Logged out!',
+          'Successfully logged out from this device.',
+          'success'
+        ).then(()=>{
+          navigate('/')
+        })
+      }
+    })
+  }
+
+  useEffect(()=>{
+    const config = {
+      headers:{
+        'Authorization' : localStorage.getItem('tokenForValidation')
+      }
+    };
+    axios.get('http://localhost:9092/user/get',config).then((response)=>{
+      userObj.setLoggedUser(response.data.name)
+    }).catch(err=>{
+      if(err.response){
+        Swal.fire({icon: "error",title: "Error!",text: `${err.response.data} !!! ` })
+      }
+    })
+  },[])
 
   return (
     <>
@@ -79,9 +127,9 @@ const UserHome = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/user/signout" className={currentPage === 'signout' ? 'nav-link active' : 'nav-link text-white'}>
+                  <button onClick={signOutUser} className={currentPage === 'signout' ? 'nav-link active' : 'nav-link text-white'}>
                     <i className="fa-solid fa-right-from-bracket"></i> Sign out
-                  </Link>
+                  </button>
                 </li>
               </ul>
               <hr />
@@ -94,7 +142,7 @@ const UserHome = () => {
                 <input type="text" className='mx-3' onMouseEnter={handleHovered} onMouseLeave={handleMouseLeaved} onKeyUp={handleKeyUp} ref={inputRef} size={35} style={inputObj}
                   placeholder="Search Note & press enter" />
               </div>
-              <div className="h3">Hello Vishal.</div>
+              <div className="h3">Hello {`${userObj.loggedUser}`}.</div>
             </div>
             <div className="">{contentToShow}</div>
           </main>

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import Navbar from './Navbar'
 import "bootstrap/dist/css/bootstrap.min.css"
-
+import userContext from '../contexts/UserContext'
 const LoginForm = () => {
 
     const navigate = useNavigate();
@@ -34,21 +34,7 @@ const LoginForm = () => {
         setPassword(e.target.value)
     }
 
-    // const authenticateUser = async () => {
-    //     let url = "http://localhost:9092/auth/login";
-    //     let obj = {
-    //         method: "POST",
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: {
-    //             email: email,
-    //             password: password
-    //         }
-    //     };
-    //     const response = await fetch(url, obj)
-    //     const data = await response.json()
-    //     console.log(data);
-    // }
-
+    const userObj = useContext(userContext)
     const validateUser = () => {
         let url = "http://localhost:9092/auth/login";
         let obj = {
@@ -57,9 +43,13 @@ const LoginForm = () => {
         }
         axios.post(url, obj)
             .then((response) => {
-                localStorage.setItem("token", response.data.jwtToken)
+                let token = 'Bearer ' + response.data.jwtToken
+                localStorage.setItem("tokenForValidation", token)
                 localStorage.setItem("user", response.data.username)
-                navigate("/user/home")
+                userObj.setLoggedUser(response.data.username)
+                Swal.fire({icon: 'success',text : 'Login success Redirecting to your page !!!',timer : 2000,showConfirmButton : false}).then(()=>{
+                    navigate("/user/home")
+                })
             })
             .catch((error) => {
                 if (error.response) {
@@ -84,7 +74,7 @@ const LoginForm = () => {
         } else {
             Swal.fire({
                 icon: 'info',
-                text: 'Enter a valid Credentials',
+                text: 'Enter a valid Credentials to authenticate !!!',
                 showConfirmButton: false,
                 timer: 1900,
             })
