@@ -1,9 +1,16 @@
 import React from 'react'
-
-function Notes() {
+import NotesItem from './NotesItem'
+function Notes(props) {
+  const notes = props.notes
   return (
     <>
-    hi i am in notes.
+      <div className="row">
+          {
+            notes.map((note) => {
+              return <div className="col-6"><NotesItem note={note} categoryName={props.categoryName} /></div>
+            })
+          }
+      </div>
     </>
   )
 }

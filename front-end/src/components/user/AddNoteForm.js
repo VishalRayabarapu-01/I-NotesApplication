@@ -52,6 +52,9 @@ const AddNoteForm = () => {
           if (res.status === HttpStatusCode.Created) {
             Swal.fire("Success", "Your Note has been added successfully!", "success")
           }
+          setCategory("")
+          setNoteTitle("")
+          setDescriprion("")
         }).catch(err => {
           if (err.response) {
             Swal.fire({

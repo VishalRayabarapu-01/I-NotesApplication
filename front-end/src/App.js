@@ -6,7 +6,7 @@ import GetStarted from "./components/GetStarted";
 import UserHome from "./components/user/UserHome";
 import UserState from "./contexts/UserState";
 import PrivateLogin from './PrivateLogin'
-
+import CategoryState from './contexts/CategoryState'
 function App() {
   return (
     <>
@@ -15,7 +15,7 @@ function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/get-started" exact element={<GetStarted />} />
           <Route path="/login" exact element={<LoginForm /> } />
-          <Route path="/user/*" exact element={<PrivateLogin><UserHome /></PrivateLogin>} />
+          <Route path="/user/*" exact element={<CategoryState><PrivateLogin><UserHome /></PrivateLogin></CategoryState>} />
         </Routes>
       </UserState>
     </>

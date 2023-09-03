@@ -1,12 +1,12 @@
 import React, { useRef, useState, useContext, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import HomeContent from './HomeContent'
-import Notes from './Notes'
+import Categories from './Categories'
 import TODO from './TODO'
 import Settings from './Settings'
 import userContext from '../../contexts/UserContext'
 import "bootstrap/dist/css/bootstrap.min.css"
-import axios from 'axios'
+import axios, { HttpStatusCode } from 'axios'
 import Swal from 'sweetalert2'
 
 const UserHome = () => {
@@ -50,7 +50,7 @@ const UserHome = () => {
   if (currentPage === 'home') {
     contentToShow = <HomeContent />
   } else if (currentPage === 'notes') {
-    contentToShow = <Notes />
+    contentToShow = <Categories />
   }
   else if (currentPage === 'todo') {
     contentToShow = <TODO />
@@ -93,6 +93,10 @@ const navigate=useNavigate()
     axios.get('http://localhost:9092/user/get',config).then((response)=>{
       userObj.setLoggedUser(response.data.name)
     }).catch(err=>{
+      if(err.response.status===HttpStatusCode.Unauthorized){
+        Swal.fire({icon: "error",title: "Error!",text: `${err.response.data} !!! ` })
+        navigate('/login')
+      }
       if(err.response){
         Swal.fire({icon: "error",title: "Error!",text: `${err.response.data} !!! ` })
       }

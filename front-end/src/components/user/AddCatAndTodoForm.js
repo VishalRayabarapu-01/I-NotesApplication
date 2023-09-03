@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { HttpStatusCode } from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -38,7 +38,7 @@ const AddCatAndTodoForm = () => {
         let url="http://localhost:9092/user/addCategory"
         let data={'name' : category}
         axios.post(url,data,config).then(response=>{
-          if(response.status === 201){
+          if(response.status === HttpStatusCode.Created){
             Swal.fire({
               title : 'success',
               text : `Category Added Successfully with name : ${category}`,
