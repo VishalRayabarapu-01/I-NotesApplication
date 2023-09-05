@@ -8,6 +8,7 @@ const AddCatAndTodoForm = () => {
   //pending for todo.
   const [category, setCategory] = useState("")
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoad,setIsLoad]=useState(false)
   const updateCategory = (e) => {
     setCategory(e.target.value)
   }
@@ -35,12 +36,12 @@ const AddCatAndTodoForm = () => {
           }
         };
         setIsLoading((prevState) => !prevState)
-        let url="http://localhost:9092/user/addCategory"
+        let url="https://inotes-application.onrender.com/user/addCategory"
         let data={'name' : category}
         axios.post(url,data,config).then(response=>{
           if(response.status === HttpStatusCode.Created){
             Swal.fire({
-              title : 'success',
+              title : 'Success',
               text : `Category Added Successfully with name : ${category}`,
               icon : 'success'
             })
@@ -73,7 +74,56 @@ const AddCatAndTodoForm = () => {
   }
 
   const submitTodoData = () => {
-    console.log(category.length)
+    if (todo.length !== 0 && (todo !== 'null')) {
+      if(localStorage.getItem('tokenForValidation')===null){
+        Swal.fire({
+          title: "Please Login again",
+          icon : "error"
+        }).then(()=>{
+          navigate('/login')
+        })
+      }else{
+        const config = {
+          headers:{
+            'Authorization' : localStorage.getItem('tokenForValidation')
+          }
+        };
+        setIsLoad((prevState) => !prevState)
+        let url="https://inotes-application.onrender.com/user/addTodo"
+        let data={'description' : todo}
+        axios.post(url,data,config).then(response=>{
+          if(response.status === HttpStatusCode.Created){
+            Swal.fire({
+              title : 'Success',
+              text : `TODO added successfully with description : ${todo}`,
+              icon : 'success'
+            })
+            setTodo("")
+          }
+        }).catch(error=>{
+          if(error.response){
+            Swal.fire({title:"Error !",icon:'error',text:`${error.response.data}`})
+            setTodo("")
+          }else{
+            Swal.fire({
+              title : 'Error',
+              text : `Error occured while adding TODO : ${todo} Try again !!!!`,
+              icon : 'Error'
+            })
+          }
+        }).finally(() => {
+          setIsLoad(false)
+        });
+      }
+    } else {
+      Swal.fire({
+        title: "Enter valid category Name",
+        icon: 'warning',
+        timer : 2000
+      }).then(()=>{
+        setTodo('')
+      })
+    }
   }
 
   return (
@@ -90,11 +140,13 @@ const AddCatAndTodoForm = () => {
       )}
       <hr />
       <div className="text-center fs-2" style={{ fontFamily: 'Ubuntu', fontWeight: 'bolder' }}>Add a TODO :-</div>
-      <div className="mb-2 mt-1">
+      {isLoad ? (<div className="mt-4"> <Loader /></div>) : (
+        <div className="mb-2 mt-1">
         <label htmlFor="description" className="form-label">TODO <span className='text-danger'>*</span></label>
         <input type="text" value={todo} placeholder='Add a TODO' onChange={updateTodo} className="form-control" id="description" aria-describedby="emailHelp" required={true} />
         <div className="text-center mt-3"><button type="button" onClick={submitTodoData} className="btn btn-primary ">Add A TODO</button></div>
       </div>
+      )}
     </>
   )
 }

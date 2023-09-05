@@ -8,6 +8,7 @@ import userContext from '../contexts/UserContext'
 const LoginForm = () => {
 
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const styles = {
         backdropFilter: 'blur(20px)',
@@ -34,9 +35,23 @@ const LoginForm = () => {
         setPassword(e.target.value)
     }
 
+    if(isLoading){
+        Swal.fire({
+            title: 'Be patient!',
+            text: 'Validating your credentials.',
+            imageUrl: '/gifs/load.gif',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+            showConfirmButton: false,
+            allowOutsideClick: () => !Swal.isLoading()
+          })
+    }
+
     const userObj = useContext(userContext)
     const validateUser = () => {
-        let url = "http://localhost:9092/auth/login";
+        setIsLoading((prevState) => !prevState)
+        let url = "https://inotes-application.onrender.com/auth/login";
         let obj = {
             email: email,
             password: password
@@ -47,7 +62,7 @@ const LoginForm = () => {
                 localStorage.setItem("tokenForValidation", token)
                 localStorage.setItem("user", response.data.username)
                 userObj.setLoggedUser(response.data.username)
-                Swal.fire({icon: 'success',text : 'Login success Redirecting to your page !!!',timer : 2000,showConfirmButton : false}).then(()=>{
+                Swal.fire({ icon: 'success', text: 'Login success Redirecting to your page !!!', timer: 2000, showConfirmButton: false }).then(() => {
                     navigate("/user/home")
                 })
             })
@@ -65,7 +80,9 @@ const LoginForm = () => {
                         })
                     }
                 }
-            })
+            }).finally(() => {
+                setIsLoading(false)
+            });
     }
 
     const detailsSubmitted = () => {

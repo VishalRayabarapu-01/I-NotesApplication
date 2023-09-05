@@ -34,7 +34,7 @@ function EditDetails() {
                             'Authorization': localStorage.getItem('tokenForValidation')
                         }
                     };
-                    let url = 'http://localhost:9092/user/updatePassword'
+                    let url = 'https://inotes-application.onrender.com/user/updatePassword'
                     let body = { 'password': password }
                     axios.put(url, body, config).then(res => {
                         if (res.status === HttpStatusCode.Ok) {
@@ -67,7 +67,7 @@ function EditDetails() {
                     'Authorization': localStorage.getItem('tokenForValidation')
                 }
             };
-            let url = 'http://localhost:9092/user/updateName'
+            let url = 'https://inotes-application.onrender.com/user/updateName'
             let body = { 'name': name }
             axios.put(url, body, config).then(res => {
                 if (res.status === HttpStatusCode.Ok) {

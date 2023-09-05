@@ -90,7 +90,7 @@ const navigate=useNavigate()
         'Authorization' : localStorage.getItem('tokenForValidation')
       }
     };
-    axios.get('http://localhost:9092/user/get',config).then((response)=>{
+    axios.get('https://inotes-application.onrender.com/user/get',config).then((response)=>{
       userObj.setLoggedUser(response.data.name)
     }).catch(err=>{
       if(err.response.status===HttpStatusCode.Unauthorized){
@@ -110,7 +110,7 @@ const navigate=useNavigate()
           <nav className="col-md-3 col-lg-2 bg-dark sidebar vh-100 position-fixed">
             <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
               <div className="fs-5">
-                <Link to="/" className="text-light" style={{ textDecoration: "none" }}> <img src="/image/logo192.png" alt="Logo" width="40" height="40" /> My Notes</Link>
+                <Link to="/" className="text-light" style={{ textDecoration: "none" }}> <img src="/image/logo.jpg" alt="Logo" width="40" height="40" /> My Notes</Link>
               </div>
               <hr />
               <ul className="nav nav-pills flex-column mb-auto">

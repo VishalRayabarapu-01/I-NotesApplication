@@ -21,7 +21,7 @@ const Settings = () => {
         'Authorization': localStorage.getItem('tokenForValidation')
       }
     };
-    axios.get('http://localhost:9092/user/get', config).then((response) => {
+    axios.get('https://inotes-application.onrender.com/user/get', config).then((response) => {
       let obj = {
         name: response.data.name, username: response.data.username, password: response.data.password, registeredDate: response.data.registrationDate
       }
@@ -46,7 +46,7 @@ const Settings = () => {
     }).then(result => {
       if (result.isConfirmed) {
         setIsLoading((prevState) => !prevState)
-        let url = 'http://localhost:9092/user/deleteUser'
+        let url = 'https://inotes-application.onrender.com/user/deleteUser'
         const config = {
           headers: {
             'Authorization': localStorage.getItem('tokenForValidation')

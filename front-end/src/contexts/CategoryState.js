@@ -11,7 +11,7 @@ const CategoryState = (props) => {
                 'Authorization': localStorage.getItem('tokenForValidation')
             }
         }
-        let url = 'http://localhost:9092/user/getCategories'
+        let url = 'https://inotes-application.onrender.com/user/getCategories'
         axios.get(url, config).then(response => {
             if (response.status === HttpStatusCode.Ok) {
                 setCategory(response.data)
@@ -30,7 +30,7 @@ const CategoryState = (props) => {
                 'Authorization': localStorage.getItem('tokenForValidation')
             }
         };
-        let url = `http://localhost:9092/user/deleteCategory?id=${id}`
+        let url = `https://inotes-application.onrender.com/user/deleteCategory?id=${id}`
         axios.delete(url, config).then(res => {
             if (res.status === HttpStatusCode.Ok) {
                 Swal.fire({ title: "Success!", text: `Category deleted with id ${id}`, icon: 'success' })
@@ -70,7 +70,7 @@ const CategoryState = (props) => {
                         'Authorization': localStorage.getItem('tokenForValidation')
                     }
                 };
-                let url = `http://localhost:9092/user/updateCategory`
+                let url = `https://inotes-application.onrender.com/user/updateCategory`
                 let data = { 'name': name, 'id': id }
                 return axios.put(url, data, config).then(res => {
                     if (res.status === HttpStatusCode.Ok) {

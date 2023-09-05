@@ -46,7 +46,7 @@ const AddNoteForm = () => {
             'CategoryName': category
           }
         };
-        let url = "http://localhost:9092/user/addNote"
+        let url = "https://inotes-application.onrender.com/user/addNote"
         let data = { 'title': noteTitle, 'content': description }
         axios.post(url, data, config).then(res => {
           if (res.status === HttpStatusCode.Created) {

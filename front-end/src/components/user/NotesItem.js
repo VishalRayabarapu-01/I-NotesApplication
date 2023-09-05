@@ -16,7 +16,7 @@ const NotesItem = (props) => {
                 'Authorization': localStorage.getItem('tokenForValidation')
             }
         };
-        let url = `http://localhost:9092/user/deleteNote?categoryName=${categoryName}&id=${id}`
+        let url = `https://inotes-application.onrender.com/user/deleteNote?categoryName=${categoryName}&id=${id}`
         axios.delete(url, config).then(res => {
             if (res.status === HttpStatusCode.Ok) {
                 Swal.fire({ title: "Success!", text: `Note deleted with id ${id}`, icon: 'success' })
@@ -54,7 +54,7 @@ const NotesItem = (props) => {
                         'Authorization': localStorage.getItem('tokenForValidation')
                     }
                 };
-                let url = `http://localhost:9092/user/updateNoteTitle`
+                let url = `https://inotes-application.onrender.com/user/updateNoteTitle`
                 let data = { 'title': title, 'id': id }
                 return axios.put(url, data, config).then(res => {
                     if (res.status === HttpStatusCode.Ok) {

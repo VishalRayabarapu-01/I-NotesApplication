@@ -26,7 +26,7 @@ const GetStarted = () => {
     if (name.length >= 4) {
       if (email.includes("@")) {
         if (password.length > 8) {
-          let url = "http://localhost:9092/auth/add"
+          let url = "https://inotes-application.onrender.com/auth/add"
           let obj = {
             username: email,
             password: password,
