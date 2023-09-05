@@ -40,7 +40,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //            throw new RuntimeException(e);
 //        }
 		// Authorization
-
 		String requestHeader = request.getHeader("Authorization");
 		// Bearer 2352345235sdfrsfgsdfsdf
 		//logger.info(" Header :  {}", requestHeader);
@@ -60,11 +59,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			} catch (ExpiredJwtException e) {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				PrintWriter writer = response.getWriter();
-				writer.println("Given jwt token is expired !!");
+				writer.println("Token expired (LOGIN AGAIN)  !!!");
 			} catch (MalformedJwtException e) {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				PrintWriter writer = response.getWriter();
-				writer.println("Some changed has done in token !! Invalid Token");
+				writer.println("Some changes has done in token !! Invalid Token");
 			} catch (Exception e) {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				PrintWriter writer = response.getWriter();

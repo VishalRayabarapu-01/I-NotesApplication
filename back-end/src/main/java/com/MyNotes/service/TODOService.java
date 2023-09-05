@@ -5,18 +5,19 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.MyNotes.payloads.TODODto;
-import com.MyNotes.payloads.UserDto;
 
 @Service
 public interface TODOService {
 
-	public TODODto addTodo(TODODto TodoDto);
+	public boolean addTodo(String username,TODODto TodoDto);
 
-	public boolean deleteTodo(String title,UserDto user);
+	public boolean deleteTodo(int id,String username);
 
-	public boolean updateTodo(int todoId,TODODto todo, UserDto dto);
-
-	public List<TODODto> getTodos(UserDto user);
+	public boolean updateTodoDescription(TODODto dto);
+	
+	public boolean updateTodoCompletion(TODODto dto);
+	
+	public List<TODODto> getTodos(String username);
 	
 	
 

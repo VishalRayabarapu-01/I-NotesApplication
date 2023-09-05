@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +22,13 @@ import com.MyNotes.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(allowedHeaders = "*")
 public class AuthController {
 
+	//@CrossOrigin(allowedHeaders = "*")
+	//allows to pass the headers to the server in request if not the headers sent from client 
+	// are deleted and no headers are passed to server ...
+	
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -40,8 +46,7 @@ public class AuthController {
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
 
         this.doAuthenticate(request.getEmail(), request.getPassword());
-
-
+        
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
 
@@ -50,6 +55,11 @@ public class AuthController {
 //                .username(userDetails.getUsername()).build();
         
         JwtResponse r=new JwtResponse(token,userDetails.getUsername());
+        try {
+			Thread.sleep(7000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.MyNotes.entity.User;
+import com.MyNotes.exceptions.ResourceNotFoundException;
 import com.MyNotes.repository.UserRepository;
 
 
@@ -25,6 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 		
 		if(optionalUser.isEmpty()) {
 			user = null;
+			throw new ResourceNotFoundException("User"," correct username,No.of users ",0);
 		}else {
 			user=optionalUser.get();
 		}

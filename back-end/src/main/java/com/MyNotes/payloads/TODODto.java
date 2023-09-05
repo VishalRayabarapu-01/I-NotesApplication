@@ -14,8 +14,6 @@ import lombok.Setter;
 public class TODODto {
 	
 	private int id;
-
-	private String title;
 	
 	private String description;
 	

@@ -29,7 +29,7 @@ public class GlobalExceptionalController {
 	
 	@ExceptionHandler(value = {ExpiredJwtException.class})
 	public ResponseEntity<?> expiredToken() {
-        return new ResponseEntity<>("Given jwt token is expired !!",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Login expied to continue login again !!!",HttpStatus.BAD_REQUEST);
     }
 	
 	@ExceptionHandler(MalformedJwtException.class)

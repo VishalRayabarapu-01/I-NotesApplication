@@ -41,7 +41,6 @@ public class NoteServiceImpl implements NoteService {
 		for(Category c: categories) {
 			if(c.getName().equals(categoryName)) {
 				category=c;
-				System.out.println(c.getName());
 				break;
 			}
 		}

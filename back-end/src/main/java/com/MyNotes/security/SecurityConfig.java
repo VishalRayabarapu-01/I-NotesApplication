@@ -3,6 +3,7 @@ package com.MyNotes.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,7 +21,8 @@ public class SecurityConfig {
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
+        	http
+        		.csrf(csrf -> csrf.disable())
         		.authorizeHttpRequests((auth)->{
         			auth
         			.requestMatchers("/user/**")
@@ -29,6 +31,7 @@ public class SecurityConfig {
         			.anyRequest()
         			.authenticated();
         		})
+        		.cors(Customizer.withDefaults())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

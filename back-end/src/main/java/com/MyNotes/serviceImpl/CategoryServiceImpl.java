@@ -69,9 +69,15 @@ public class CategoryServiceImpl implements CategoryService {
 	public boolean updateCategoryName(String updateName, int id, String username) {
 		Category category = repository.findById(id).orElseThrow(
 				() -> new CategoryException("update category", "Category not found", HttpStatus.NOT_FOUND));
+		User user = userRepository.findByUsername(username).get();
+		user.getCategories().forEach((item) -> {
+			if (item.getName().equals(updateName)) {
+				throw new CategoryException("Updating category", "category already exist", HttpStatus.NOT_ACCEPTABLE);
+			}
+		});
 		category.setName(updateName);
 		Category updatedCategory = repository.save(category);
-		if (!(updatedCategory.getName().equals(category.getName()))) {
+		if (updatedCategory.getName().equals(category.getName())) {
 			return true;
 		}
 		return false;
