@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: i-notes
+  labels:
+    app: i-notes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: i-notes
+  template:
+    metadata:
+      labels:
+        app: i-notes
+    spec:
+      containers:
+      - name: i-notes
+        image: sujithsai/i-notes:1
+        ports:
+        - containerPort: 3001
